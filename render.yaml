@@ -1,0 +1,16 @@
+# Render Blueprint: one web service that serves both the client and the Socket.IO server.
+# In Render: New → Blueprint → pick this repo. See DEPLOY.md.
+services:
+  - type: web
+    name: mafia
+    runtime: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      # Render sits behind a proxy; read the real client IP for rate limiting.
+      - key: TRUST_PROXY
+        value: "1"
